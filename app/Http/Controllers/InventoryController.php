@@ -39,7 +39,7 @@ class InventoryController extends Controller
         }
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request,FoodInventory $food){
 
         try{
             // validate
@@ -49,8 +49,6 @@ class InventoryController extends Controller
                 'quantity' => 'required|integer',
                 'price' => 'required|numeric',
             ]);
-
-            $food = FoodInventory::findOrFail($id);
 
             $food->update($validated);
 
@@ -63,9 +61,8 @@ class InventoryController extends Controller
 
     }
 
-    public function delete(Request $request, $id){
+    public function delete(Request $request, FoodInventory $food){
         try{
-            $food = FoodInventory::findOrFail($id);
             $food->delete();
 
             return redirect()->route('inventory.index')->with('success', 'Food item deleted successfully.');
@@ -75,10 +72,8 @@ class InventoryController extends Controller
         }
     }
 
-    public function getInventoryById($id){
-        // Get food inventory by ID
-        $foodInventory = FoodInventory::findOrFail($id);
-        return response()->json($foodInventory);
+    public function getInventoryById(FoodInventory $food){
+        return response()->json($food);
     }
 
 }
